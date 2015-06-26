@@ -4,10 +4,11 @@
 // remix Millennium print jobs that are simple text
 // e.g., order record print
 
+// 20150626 Display E PRICE when PAID data is not available  
 // 20150623 Fix null match on bibliographic holds
 //			Fix match on LOCATION=multi
 // 20150427 Order record printouts with barcodes for bib and order record number
-// 20150427 check bibliographic level holds in WebPAC. If holds >= 5, then RUSH.
+// 20150427 Check bibliographic level holds in WebPAC. If holds >= 5, then RUSH.
 
 // TO DO: 
 // Encode all keystrokes for Barcoders in scannable barcodes
@@ -161,16 +162,19 @@ if (matches !== null) {
 	receivedCopies = Number(matches[2]);
 	orderPaidPerCopy = Math.ceil((Number(matches[1])/Number(matches[2]))*100)/100;
 	orderPaidPerCopy = "$" + orderPaidPerCopy.toString();
-}
-if(orderCopies != receivedCopies) {
-	orderPaidPerCopy = "PARTIAL FULFILLMENT. CATALOGING VERIFY" + orderPaidPerCopy;		
+} else {
+	var re = / (E PRICE .+?\$[\d.]+?) /;
+	var matches = re.exec(printed);
+	if (matches !== null) {orderPaidPerCopy = (matches[1]);}
 }
 if (orderStatus.substr(0,1) == "f") { 
 	orderPaidPerCopy = "STANDING ORDER. CATALOGING VERIFY" + orderPaidPerCopy;
+} else if (orderStatus.substr(0,1) == "o") { 
+	orderPaidPerCopy = "UNPAID ORDER. CATALOGING VERIFY " + orderPaidPerCopy;
+} else if (orderCopies != receivedCopies) {
+	orderPaidPerCopy = "PARTIAL FULFILLMENT. CATALOGING VERIFY" + orderPaidPerCopy;		
 }
-if (orderStatus.substr(0,1) == "o") { 
-	orderPaidPerCopy = "UNPAID ORDER. CATALOGING VERIFY";
-}
+
 
 // PRINT
 // EPSON ESC/POS information at http://www.epsonexpert.com/Epson_Assets/ESCPOS_Commands_FAQs.pdf
