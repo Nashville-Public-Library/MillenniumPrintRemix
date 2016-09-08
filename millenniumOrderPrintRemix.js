@@ -4,6 +4,7 @@
 // remix Millennium print jobs that are simple text
 // e.g., order record print
 
+// 20160908 Accept 7- or 8-character ORDER .o number
 // 20150626 Display E PRICE when PAID data is not available  
 // 20150623 Fix null match on bibliographic holds
 //			Fix match on LOCATION=multi
