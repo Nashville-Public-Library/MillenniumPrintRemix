@@ -200,7 +200,11 @@ newPrint += "CALL NUMBER: " + callNumber + "\n";
 newPrint += "TITLE: " + title + "\n";
 newPrint += "------------------------------------------\n";
 newPrint += "\x1D" + "\x68" + "\x50"; // set barcode height to 80 pt
-newPrint += "\x1D" + "k" + "\x45" + "\x08" + orderRecord.toUpperCase(); // CODE39 barcode, might be wrong
+var orderRecordLengthCommand = "\x08"
+if (orderRecord.length==9) {
+	orderRecordLengthCommand = "\x09"
+}
+newPrint += "\x1D" + "k" + "\x45" + orderRecordLengthCommand + orderRecord.toUpperCase(); // CODE39 barcode, might be wrong
 newPrint += "." + orderRecord + "\n";
 newPrint += "------------------------------------------\n";
 newPrint += "STATUS: " + orderStatus + "\n";
