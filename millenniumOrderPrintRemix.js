@@ -54,7 +54,7 @@ var matches = re.exec(printed);
 var title = "";
 if (matches !== null) { title = matches[1] };
 // ORDER RECORD NUMBER
-var re = /\n *(o\d{6}[\dx])([\s\S]+?$)/;
+var re = /\n *(o\d{6,7}[\dx])([\s\S]+?$)/;
 var matches = re.exec(printed);
 var orderRecord = matches[1];
 printed = matches[2]; // remove the bib section from the source
